@@ -1,0 +1,114 @@
+{
+	"info": {
+		"_postman_id": "68f3ff17-f31b-488b-b85f-de1bed18eae2",
+		"name": "PipeLine",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50149898",
+		"_collection_link": "https://prathmeshsargar10-6670365.postman.co/workspace/Prathmesh-Sargar's-Workspace~6f2f6a34-1a87-47f7-81f8-1867aab1e085/collection/50149898-68f3ff17-f31b-488b-b85f-de1bed18eae2?action=share&source=collection_link&creator=50149898"
+	},
+	"item": [
+		{
+			"name": "Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"/* Basic response tests added by assistant */",
+							"// Ensure status code is 200",
+							"pm.test('Status code is 200', () => {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Ensure response time is under 2000ms",
+							"pm.test('Response time is below 2000ms', () => {",
+							"  pm.expect(pm.response.responseTime).to.be.below(2000);",
+							"});",
+							"",
+							"// Ensure content-type is JSON",
+							"pm.test('Content-Type is application/json', () => {",
+							"  pm.response.to.have.header('Content-Type');",
+							"  const ct = pm.response.headers.get('Content-Type') || '';",
+							"  pm.expect(ct.toLowerCase()).to.include('application/json');",
+							"});",
+							"",
+							"// Parse JSON and run schema-ish checks",
+							"let jsonData;",
+							"try {",
+							"  jsonData = pm.response.json();",
+							"} catch (e) {",
+							"  pm.test('Response is valid JSON', () => { throw e; });",
+							"}",
+							"",
+							"pm.test('Response has id, message and timestamp', () => {",
+							"  pm.expect(jsonData).to.have.property('id');",
+							"  pm.expect(jsonData).to.have.property('message');",
+							"  pm.expect(jsonData).to.have.property('timestamp');",
+							"});",
+							"",
+							"// id should look like a UUID v4-ish",
+							"pm.test('id looks like a UUID', () => {",
+							"  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;",
+							"  pm.expect(jsonData.id).to.match(uuidRegex);",
+							"});",
+							"",
+							"// message is non-empty string",
+							"pm.test('message is a non-empty string', () => {",
+							"  pm.expect(jsonData.message).to.be.a('string');",
+							"  pm.expect(jsonData.message.trim().length).to.be.above(0);",
+							"});",
+							"",
+							"// timestamp should be numeric string or number, and within a plausible range",
+							"pm.test('timestamp is numeric and plausible', () => {",
+							"  const ts = parseInt(jsonData.timestamp, 10);",
+							"  pm.expect(Number.isFinite(ts)).to.be.true;",
+							"  // check plausible epoch in ms (between 2000-01-01 and 10 years in future)",
+							"  const min = new Date('2000-01-01').getTime();",
+							"  const max = Date.now() + 10 * 365 * 24 * 60 * 60 * 1000;",
+							"  pm.expect(ts).to.be.within(min, max);",
+							"});",
+							"",
+							"// Example of checking message content if desired (optional - does not fail if message differs)",
+							"pm.test('message contains readable text', () => {",
+							"  pm.expect(jsonData.message.length).to.be.at.least(3);",
+							"});",
+							"",
+							"/* End of tests */"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/status",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"status"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
