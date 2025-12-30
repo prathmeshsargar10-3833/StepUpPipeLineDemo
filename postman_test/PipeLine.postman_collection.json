@@ -14,7 +14,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"// Post-response tests for GET http://localhost:8043/status",
+							"// Post-response tests for GET http://localhost:8080/status",
 							"// Validates status code, response time, headers, JSON schema, and content.",
 							"// Extracts id and timestamp to environment (fallback to collection) and performs additional guards.",
 							"",
@@ -163,12 +163,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8043/status",
+					"raw": "http://localhost:8080/status",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8043",
+					"port": "8080",
 					"path": [
 						"status"
 					]
