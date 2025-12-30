@@ -14,5 +14,4 @@ public class PipiLineController {
         PipeLineStatusResponse response = new PipeLineStatusResponse();
         response.setMessage("StepUp Pipeline is running");
         return ResponseEntity.ok(response);
-    }
-}
+    }}
